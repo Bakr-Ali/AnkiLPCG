@@ -354,6 +354,38 @@ def _poemlines_from_textlines_by_section(config: Dict[str, Any], text_lines: Dic
         pred = poem_line
     return lines
 
+def parse_questions(lines: List[str], caesura: str, question_separator: bool) -> Dict:
+    """
+    Parse question pairs. If _question_separator_ is true, treat the _caesura_ as a
+    separator between the question and the answer, otherwise treat it as a marker for the answer lines.
+    """
+
+    ret = {}
+    ret['verses'] = []
+    ret['subtitles'] = []
+    cur_subtitle = ''
+    new_section = True
+    for line in lines:
+        if question_separator:
+            if caesura in line:
+                if new_section:
+                    cur_subtitle = line
+                    new_section = False
+                else:
+                   cur_subtitle += '<br>'
+                   cur_subtitle += line
+            else:
+                ret['verses'].append(line)
+                ret['subtitles'].append(cur_subtitle)
+                new_section = True
+        else:
+            if caesura not in line:
+                cur_subtitle = line
+            else:
+                ret['verses'].append(line)
+                ret['subtitles'].append(cur_subtitle)
+
+    return ret
 
 def cleanse_text(string: str, config: Dict[str, Any]) -> List[str]:
     """
@@ -419,6 +451,7 @@ class ImportMode(Enum):
     CUSTOM = auto()
     AUTOMATIC = auto()
     BY_SECTION = auto()
+    QUESTIONS = auto()
 
 class MediaImportMode(Enum):
     BULK = auto()
@@ -430,7 +463,7 @@ def add_notes(col: Any, config: Dict[str, Any], note_constructor: Callable,
               title: str, tags: List[str], text: List[str], deck_id: int,
               context_lines: int, group_lines: int, recite_lines: int, step: int = 1,
               media: List[str] = [], media_mode: MediaImportMode = MediaImportMode.BULK,
-              mode: ImportMode = ImportMode.CUSTOM, caesura: str = ' '):
+              mode: ImportMode = ImportMode.CUSTOM, caesura: str = ' ', question_separator: bool = True):
     """
     Generate notes from the given title, tags, poem text, and number of
     lines of context. Return the number of notes added.
@@ -490,6 +523,20 @@ def add_notes(col: Any, config: Dict[str, Any], note_constructor: Callable,
             col.addNote(n)
             added += 1
         lines = map(lambda l: l[1], lines)
+    elif mode == ImportMode.QUESTIONS:
+        parsed = parse_questions(text, caesura, question_separator)
+        media_added = 0
+        lines = _poemlines_from_textlines_by_section(config, parsed)
+        for section_lines, line in lines:
+            n = note_constructor(col, model)
+            note_media = choose_media(media_added, section_lines)
+            media_added += len(note_media)
+            line.populate_note(n, title, tags, 0, section_lines, deck_id, 1, note_media)
+            col.addNote(n)
+            added += 1
+        lines = map(lambda l: l[1], lines)
+    else:
+        raise Exception("unhandled import mode")
 
     save_whole_poem(lines, title)
 

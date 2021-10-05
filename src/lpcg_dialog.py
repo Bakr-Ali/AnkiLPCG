@@ -41,14 +41,16 @@ class LPCGDialog(QDialog):
         self.form.cancelButton.clicked.connect(self.reject)
         self.form.openFileButton.clicked.connect(self.onOpenFile)
         self.form.helpButton.clicked.connect(self.onHelp)
-        self.form.automaticCheckBox.toggled.connect(self.onAutomatic)
-        self.form.bySectionCheckBox.toggled.connect(self.onBySection)
+        self.form.customRadioButton.toggled.connect(self.onCustom)
+        self.form.automaticRadioButton.toggled.connect(self.onAutomatic)
+        self.form.bySectionRadioButton.toggled.connect(self.onBySection)
+        self.form.importQuestionsRadioButton.toggled.connect(self.onImportQuestions)
 
-        self.setLayoutDirection(Qt.RightToLeft)
         opt = QTextOption()
         opt.setTextDirection(Qt.RightToLeft)
         opt.setAlignment(Qt.AlignRight)
         self.form.textBox.document().setDefaultTextOption(opt)
+        self.form.questionPairGroup.setHidden(True)
 
         self.media = []
         self.form.mediaButton.clicked.connect(self.onMedia)
@@ -57,8 +59,9 @@ class LPCGDialog(QDialog):
         "On close, create notes from the contents of the poem editor."
         title = self.form.titleBox.text().strip()
         mode = self.getImportMode()
+        question_separator = self.form.questionSeparatorRadioButton.isChecked()
 
-        if not title and mode == ImportMode.CUSTOM:
+        if not title and mode in (ImportMode.CUSTOM, ImportMode.QUESTIONS):
             showWarning("يجب أن تدخل عنوانًا لهذه القصيدة.")
             return
 
@@ -83,7 +86,8 @@ class LPCGDialog(QDialog):
             notes_generated = add_notes(self.mw.col, config, Note, title, tags, text, did,
                                         context_lines, group_lines, recite_lines, step, self.media,
                                         self.getMediaImportMode(), mode,
-                                        self.form.caesura.text())
+                                        self.form.caesura.text(),
+                                        question_separator)
         except KeyError as e:
             showWarning(
                 "تعذر إيجاد حقل {field} في نوع ملحوظة {name} في مجموعتك. "
@@ -99,34 +103,61 @@ class LPCGDialog(QDialog):
             tooltip("%i notes added." % notes_generated)
 
     def getImportMode(self) -> ImportMode:
-        if self.form.automaticCheckBox.isChecked():
+        if self.form.automaticRadioButton.isChecked():
             return ImportMode.AUTOMATIC
-        elif self.form.bySectionCheckBox.isChecked():
+        elif self.form.bySectionRadioButton.isChecked():
             return ImportMode.BY_SECTION
+        elif self.form.importQuestionsRadioButton.isChecked():
+            return ImportMode.QUESTIONS
         else:
             return ImportMode.CUSTOM
 
-    def onAutomatic(self, checked: bool):
-        if checked:
-            self.form.bySectionCheckBox.setChecked(False)
-        self.form.titleBox.setEnabled(not self.form.titleBox.isEnabled())
-        self.updateCaesuraInputState()
+    def onCustom(self, toggled: bool):
+        self.updateOptionsState()
 
-    def onBySection(self, checked: bool):
-        if checked:
-            self.form.automaticCheckBox.setChecked(False)
-        self.form.titleBox.setEnabled(not self.form.titleBox.isEnabled())
-        self.form.StepSpin.setEnabled(not self.form.StepSpin.isEnabled())
-        self.form.reciteLinesSpin.setEnabled(not self.form.reciteLinesSpin.isEnabled())
-        self.form.contextLinesSpin.setEnabled(not self.form.contextLinesSpin.isEnabled())
-        self.form.groupLinesSpin.setEnabled(not self.form.groupLinesSpin.isEnabled())
-        self.updateCaesuraInputState()
+    def onAutomatic(self, toggled: bool):
+        self.updateOptionsState()
 
-    def updateCaesuraInputState(self):
-        if self.form.automaticCheckBox.isChecked() or self.form.bySectionCheckBox.isChecked():
-            self.form.caesura.setEnabled(True)
-        else:
+    def onBySection(self, toggled: bool):
+        self.updateOptionsState()
+
+    def onImportQuestions(self, toggled: bool):
+        self.updateOptionsState()
+
+    def updateOptionsState(self):
+        if self.form.customRadioButton.isChecked():
+            self.form.titleBox.setEnabled(True)
+            self.form.StepSpin.setEnabled(True)
+            self.form.reciteLinesSpin.setEnabled(True)
+            self.form.contextLinesSpin.setEnabled(True)
+            self.form.groupLinesSpin.setEnabled(True)
+            self.form.questionPairGroup.setHidden(True)
             self.form.caesura.setEnabled(False)
+        elif self.form.automaticRadioButton.isChecked():
+            self.form.titleBox.setEnabled(False)
+            self.form.StepSpin.setEnabled(True)
+            self.form.reciteLinesSpin.setEnabled(True)
+            self.form.contextLinesSpin.setEnabled(True)
+            self.form.groupLinesSpin.setEnabled(True)
+            self.form.questionPairGroup.setHidden(True)
+            self.form.caesura.setEnabled(True)
+        elif self.form.bySectionRadioButton.isChecked():
+            self.form.titleBox.setEnabled(False)
+            self.form.StepSpin.setEnabled(False)
+            self.form.reciteLinesSpin.setEnabled(False)
+            self.form.contextLinesSpin.setEnabled(False)
+            self.form.groupLinesSpin.setEnabled(False)
+            self.form.questionPairGroup.setHidden(True)
+            self.form.caesura.setEnabled(True)
+        elif self.form.importQuestionsRadioButton.isChecked():
+            self.form.titleBox.setEnabled(True)
+            self.form.StepSpin.setEnabled(False)
+            self.form.reciteLinesSpin.setEnabled(False)
+            self.form.contextLinesSpin.setEnabled(False)
+            self.form.groupLinesSpin.setEnabled(False)
+            self.form.questionPairGroup.setHidden(False)
+            self.form.caesura.setEnabled(True)
+
 
     def getMediaImportMode(self) -> MediaImportMode:
         if self.form.MediaByNoteRadioButton.isChecked():
