@@ -9,7 +9,7 @@ venv/
 
 # build outputs
 src/import_dialog.py
-build*.zip
+*.ankiaddon
 *.pyc
 *.un~
 .coverage

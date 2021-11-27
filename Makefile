@@ -4,19 +4,16 @@ all: docs forms zip
 docs:
 	$(MAKE) -C docs html
 forms: src/import_dialog.py
-zip: build.zip
+zip: arlpcg.ankiaddon
 
 src/import_dialog.py: designer/import_dialog.ui 
 	pyuic5 $^ > $@
 
-build.zip: src/*
+arlpcg.ankiaddon: src/*
 	rm -f $@
 	rm -f src/meta.json
 	rm -rf src/__pycache__
 	( cd src/; zip -r ../$@ * )
-
-addon: zip
-	cp build.zip arlpcg.ankiaddon
 
 clean:
 	make -C docs clean
@@ -24,4 +21,4 @@ clean:
 	rm -f src/*.pyc
 	rm -f src/__pycache__
 	rm -f src/import_dialog.py
-	rm -f build.zip
+	rm -f arlpcg.ankiaddon
