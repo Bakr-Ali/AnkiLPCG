@@ -25,7 +25,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>&amp;العنوان</string>
+        <string>العنوان</string>
        </property>
        <property name="buddy">
         <cstring>titleBox</cstring>
@@ -42,7 +42,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>الو&amp;سوم</string>
+        <string>الوسوم</string>
        </property>
        <property name="buddy">
         <cstring>tagsBox</cstring>
@@ -55,7 +55,7 @@
      <item row="6" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>السطور الم&amp;جاورة</string>
+        <string>السطور المجاورة</string>
        </property>
        <property name="buddy">
         <cstring>contextLinesSpin</cstring>
@@ -110,7 +110,7 @@
      <item row="8" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>مجموعات س&amp;طور مكونة من</string>
+        <string>مجموعات سطور مكونة من</string>
        </property>
        <property name="buddy">
         <cstring>groupLinesSpin</cstring>
@@ -144,21 +144,21 @@
    <item row="10" column="1">
      <widget class="QCheckBox" name="automaticCheckBox">
        <property name="text">
-         <string>&amp;تعرف تلقائي على الأبيات والعناوين</string>
+         <string>تعرف تلقائي على الأبيات والعناوين</string>
        </property>
      </widget>
    </item>
    <item row="11" column="1">
      <widget class="QCheckBox" name="bySectionCheckBox">
        <property name="text">
-         <string>تقسيم تلقائي حسب الأ&amp;بواب</string>
+         <string>تقسيم تلقائي حسب الأبواب</string>
         </property>
      </widget>
    </item>
    <item row="12" column="1">
       <widget class="QPushButton" name="mediaButton">
        <property name="text">
-        <string>&amp;أضف وسائط</string>
+        <string>أضف وسائط</string>
        </property>
       </widget>
      </item>
@@ -208,7 +208,7 @@
    <item>
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>&amp;القصيدة:</string>
+      <string>القصيدة:</string>
      </property>
      <property name="buddy">
       <cstring>textBox</cstring>
@@ -223,7 +223,7 @@
      <item>
       <widget class="QPushButton" name="helpButton">
        <property name="text">
-        <string>&amp;مساعدة</string>
+        <string>مساعدة</string>
        </property>
       </widget>
      </item>
@@ -233,7 +233,7 @@
         <string>يستبدل محتوى محرر الأشعار بمحتوى ملف نصي على حاسوبك.</string>
        </property>
        <property name="text">
-        <string>&amp;فتح ملف</string>
+        <string>فتح ملف</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -262,7 +262,7 @@
         <string>يولد ملحوظات من النص في محرر الأشعار</string>
        </property>
        <property name="text">
-        <string>&amp;إضافة ملحوظات</string>
+        <string>إضافة ملحوظات</string>
        </property>
        <property name="shortcut">
         <string>Ctrl+Return</string>
@@ -281,7 +281,7 @@
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>&amp;إلغاء</string>
+        <string>إلغاء</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
