@@ -18,3 +18,5 @@ docs/_build
 
 # anki add-on metadata file which appears when live-linking
 meta.json
+# anki test profile
+ankiprofile

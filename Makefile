@@ -15,6 +15,10 @@ arlpcg.ankiaddon: src/*
 	rm -rf src/__pycache__
 	( cd src/; zip -r ../$@ * )
 
+# install in test profile
+install: zip
+	unzip -o arlpcg.ankiaddon -d ankiprofile/addons21/1642554134
+
 clean:
 	make -C docs clean
 	rm -f *.pyc
