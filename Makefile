@@ -4,12 +4,12 @@ all: docs forms zip
 docs:
 	$(MAKE) -C docs html
 forms: src/import_dialog.py
-zip: arlpcg.ankiaddon
+zip: ARLPCG.ankiaddon
 
 src/import_dialog.py: designer/import_dialog.ui 
 	pyuic5 $^ > $@
 
-arlpcg.ankiaddon: src/*
+ARLPCG.ankiaddon: src/*
 	rm -f $@
 	rm -f src/meta.json
 	rm -rf src/__pycache__
@@ -17,7 +17,7 @@ arlpcg.ankiaddon: src/*
 
 # install in test profile
 install: zip
-	unzip -o arlpcg.ankiaddon -d ankiprofile/addons21/1642554134
+	unzip -o ARLPCG.ankiaddon -d ankiprofile/addons21/1642554134
 
 clean:
 	make -C docs clean
@@ -25,4 +25,4 @@ clean:
 	rm -f src/*.pyc
 	rm -f src/__pycache__
 	rm -f src/import_dialog.py
-	rm -f arlpcg.ankiaddon
+	rm -f ARLPCG.ankiaddon
