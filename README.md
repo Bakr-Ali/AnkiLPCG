@@ -13,6 +13,10 @@
 الإضافة مرخصة تحت رخصة GNU AGPL الإصدار الثالث،
 أو إصدار لاحق حسب إرادتك.
 
+## تحميل
+
+يمكن تحميل الإضافة من خلال صفحتها على [أنكي ويب](https://ankiweb.net/shared/info/1642554134).
+
 [أنكي]: https://apps.ankiweb.net
 [LPCG]: https://ankiweb.net/shared/info/2084557901
 
