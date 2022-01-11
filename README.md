@@ -17,6 +17,11 @@
 
 يمكن تحميل الإضافة من خلال صفحتها على [أنكي ويب](https://ankiweb.net/shared/info/1642554134).
 
+لتحميل الخطوط المستخدمة في قالب الإضافة: <https://drive.google.com/drive/folders/1AqSrg7P83QW9vo-3CmXgrUUbK7HmhfSj>
+
+يجب أن تضع الخطوط في مجلد الوسائط الخاص بأنكي لكي تعمل.
+
+
 [أنكي]: https://apps.ankiweb.net
 [LPCG]: https://ankiweb.net/shared/info/2084557901
 
